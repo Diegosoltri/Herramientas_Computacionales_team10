@@ -11,6 +11,22 @@ aim = vector(0, -10)
 food_colors = ['green', 'blue', 'yellow', 'purple', 'orange']
 current_food_color = choice(food_colors)
 
+def move_food():
+    direction = [vector(10, 0),vector(-10, 0),vector(0, 10),vector(0, -10)]
+    """Select randomly a position"""
+    random_p = randrange(4)
+    move = direction[random_p]
+    new_p = food + move
+
+    """The food dosen´t leave the limits"""
+    if -200 < new_p.x < 190 and -200 < new_p.y < 190:
+       food.move(move)
+
+    """Update"""
+    square(food.x, food.y, 9,'green')
+    update()
+
+
 def change(x, y):
     """Change snake direction."""
     aim.x = x
@@ -50,6 +66,9 @@ def move():
     for body in snake:
         square(body.x, body.y, 9, 'black')
 
+
+    move_food()
+
    #Draw the food with the selected color
     square(food.x, food.y, 9, current_food_color)
     update()
@@ -66,4 +85,7 @@ onkey(lambda: change(0, 10), 'Up')
 onkey(lambda: change(0, -10), 'Down')
 move()
 done()
+
+
+
 
