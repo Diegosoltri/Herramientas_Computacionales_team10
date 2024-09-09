@@ -54,7 +54,7 @@ def move():
 
     square(food.x, food.y, 9, 'green')
     
-    move_food()  # Mover la comida en cada paso
+    move_food()  
     
     update()
     ontimer(move, 100)
