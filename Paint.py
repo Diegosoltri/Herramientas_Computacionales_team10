@@ -13,6 +13,7 @@ from turtle import *
 
 from freegames import vector
 
+import math 
 
 def line(start, end):
     """Draw line from start to end."""
@@ -36,14 +37,32 @@ def square(start, end):
     end_fill()
 
 
-def circle(start, end):
-    """Draw circle from start to end."""
-    pass  # TODO
-
+def circle_(start, end):
+    rad = math.sqrt((end.x - start.x)**2 + (end.y - start.y)**2)
+    center = start.y - rad
+    
+    up()
+    goto(start.x, center)
+    down()
+    begin_fill() 
+    circle(rad)
+    end_fill()
 
 def rectangle(start, end):
     """Draw rectangle from start to end."""
-    pass  # TODO
+    up()
+    goto(start.x, start.y)
+    down()
+    begin_fill()
+    
+    width = end.x - start.x
+    height = end.y - start.y
+    
+    for i in range(2):
+        forward(width)  
+        left(90)
+        forward(height)  
+        left(90)
 
 
 def triangle(start, end):
@@ -52,11 +71,26 @@ def triangle(start, end):
     goto(start.x, start.y)
     down()
     begin_fill()
-
+    
     for count in range(3):
         forward(end.x - start.x)
         left(120)
 
+    end_fill()
+    
+def pentagon(start, end):
+    """Draw pentagon from start to end."""
+    up()
+    goto(start.x, start.y)
+    down()
+    begin_fill()
+    
+    side_length = end.x - start.x
+    
+    for i in range(5):
+        forward(side_length)
+        left(72)
+    
     end_fill()
 
 
@@ -88,9 +122,11 @@ onkey(lambda: color('white'), 'W')
 onkey(lambda: color('green'), 'G')
 onkey(lambda: color('blue'), 'B')
 onkey(lambda: color('red'), 'R')
+onkey(lambda: color('violet'), 'V')
 onkey(lambda: store('shape', line), 'l')
 onkey(lambda: store('shape', square), 's')
-onkey(lambda: store('shape', circle), 'c')
+onkey(lambda: store('shape', circle_), 'c')
 onkey(lambda: store('shape', rectangle), 'r')
 onkey(lambda: store('shape', triangle), 't')
+onkey(lambda: store('shape', pentagon), 'p')
 done()
