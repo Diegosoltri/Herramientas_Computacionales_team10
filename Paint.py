@@ -37,7 +37,7 @@ def square(start, end):
     end_fill()
 
 
-def circ(start, end):
+def circle_(start, end):
     rad = math.sqrt((end.x - start.x)**2 + (end.y - start.y)**2)
     center = start.y - rad
     
@@ -89,7 +89,7 @@ onkey(lambda: color('red'), 'R')
 onkey(lambda: color('violet'), 'V')
 onkey(lambda: store('shape', line), 'l')
 onkey(lambda: store('shape', square), 's')
-onkey(lambda: store('shape', circ), 'c')
+onkey(lambda: store('shape', circle_), 'c')
 onkey(lambda: store('shape', rectangle), 'r')
 onkey(lambda: store('shape', triangle), 't')
 done()
