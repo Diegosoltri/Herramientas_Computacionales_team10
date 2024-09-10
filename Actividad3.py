@@ -132,7 +132,7 @@ def move():
 
     for point, course in ghosts:
         if valid(point + course):
-            point.move(course)
+            point.move(course*4)
         else:
             options = [
                 vector(5, 0),
