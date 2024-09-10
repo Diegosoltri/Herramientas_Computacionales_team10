@@ -1,13 +1,3 @@
-"""Cannon, hitting targets with projectiles.
-
-Exercises
-
-1. Keep score by counting target hits.
-2. Vary the effect of gravity.
-3. Apply gravity to the targets.
-4. Change the speed of the ball.
-"""
-
 from random import randrange
 from turtle import *
 
@@ -54,26 +44,37 @@ def move():
         target = vector(200, y)
         targets.append(target)
 
+    """Move targets"""
     for target in targets:
         target.x -= 0.5
 
+    """Move the ball and apply gravity"""
     if inside(ball):
         speed.y -= 0.35
         ball.move(speed)
 
+    """Reposition the ball if it leaves the screen"""
+    if not inside(ball):
+        ball.x = -200
+        ball.y = -200
+        speed.x = 0
+        speed.y = 0
+
+    """Check collisions and keep targets on screen"""
     dupe = targets.copy()
     targets.clear()
 
     for target in dupe:
         if abs(target - ball) > 13:
+            """Reposition the target if it leaves the screen"""
+            if target.x < -200:
+                target.x = 200
+                target.y = randrange(-150, 150)
             targets.append(target)
 
     draw()
 
-    for target in targets:
-        if not inside(target):
-            return
-
+    """Continue moving the goals"""
     ontimer(move, 50)
 
 
@@ -84,3 +85,4 @@ tracer(False)
 onscreenclick(tap)
 move()
 done()
+
