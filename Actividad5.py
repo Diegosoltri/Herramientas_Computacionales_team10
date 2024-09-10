@@ -15,7 +15,9 @@ from turtle import *
 from freegames import path
 
 car = path('car.gif')
-tiles = list(range(32)) * 2
+"""List of symbols instead of numbers"""
+symbols = ['@', '#', '£', '∞', '$', '%', '&', '!', '*', '+', '-', '/', '?', '§', '♥', '♦', '♣', '♠', '©', '®', '✓', '★', '☺', '☻', '☼', '☽', '⚽', '⚾', '♫', '♪', '♥', '♦']
+tiles = symbols * 2
 state = {'mark': None}
 hide = [True] * 64
 
