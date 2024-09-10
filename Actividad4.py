@@ -38,11 +38,20 @@ def draw():
 
     for target in targets:
         goto(target.x, target.y)
-        dot(20, 'purple')
+        shape("triangle")
+        stamp()
+
+    for target in targets:
+        goto(target.x, target.y)
+        color('purple')
+        shape("triangle")
+        stamp()
 
     if inside(ball):
         goto(ball.x, ball.y)
-        dot(6, 'pink')
+        color('pink')
+        shape("square")
+        stamp()
 
     update()
 
