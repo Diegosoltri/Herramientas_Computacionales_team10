@@ -11,7 +11,7 @@ Exercises
 
 from random import choice
 from turtle import *
-
+from math import sqrt
 from freegames import floor, vector
 
 state = {'score': 0}
@@ -107,6 +107,10 @@ def world():
                 path.dot(2, 'white')
 
 
+def distance(p1, p2):
+    """Return the Euclidean distance between two points."""
+    return sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2)
+
 def move():
     """Move pacman and all ghosts."""
     writer.undo()
@@ -114,11 +118,13 @@ def move():
 
     clear()
 
+    """Move Pacman if the move is valid"""
     if valid(pacman + aim):
         pacman.move(aim)
 
     index = offset(pacman)
 
+    """Update board state if Pacman is in a cell with a dot"""
     if tiles[index] == 1:
         tiles[index] = 2
         state['score'] += 1
@@ -134,15 +140,28 @@ def move():
         if valid(point + course):
             point.move(course)
         else:
+            """Update board state if Pacman is in a cell with a dot"""
             options = [
-                vector(5, 0),
-                vector(-5, 0),
-                vector(0, 5),
-                vector(0, -5),
+                vector(5, 0),  # Right
+                vector(-5, 0),  # Left
+                vector(0, 5),  # Up
+                vector(0, -5),  # Down
             ]
-            plan = choice(options)
-            course.x = plan.x
-            course.y = plan.y
+
+            """Filter options to only include valid movements"""
+            valid_options = [option for option in options if valid(point + option)]
+
+            """If there are valid options, choose the one closest to Pacman"""
+            if valid_options:
+                """Add some randomness in the choice"""
+                best_move = min(valid_options, key=lambda option: abs((point + option).x - pacman.x) + abs((point + option).y - pacman.y))
+                """Add a small chance that the ghost will move in a valid random direction"""
+                if choice([True, False]):  # 50% chance
+                    best_move = choice(valid_options)
+
+                """Assign the new move to the ghost"""
+                course.x = best_move.x
+                course.y = best_move.y
 
         up()
         goto(point.x + 10, point.y + 10)
@@ -150,11 +169,14 @@ def move():
 
     update()
 
+    """Check if the ghosts reach Pacman"""
     for point, course in ghosts:
         if abs(pacman - point) < 20:
             return
 
     ontimer(move, 100)
+
+
 
 
 def change(x, y):
