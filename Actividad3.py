@@ -138,7 +138,7 @@ def move():
 
     for point, course in ghosts:
         if valid(point + course):
-            point.move(course)
+            point.move(course*4)
         else:
             """Update board state if Pacman is in a cell with a dot"""
             options = [
