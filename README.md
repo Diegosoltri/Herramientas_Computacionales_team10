@@ -15,7 +15,7 @@ Para correr estos proyectos, necesitas instalar las dependencias especificadas. 
 
 1. Clona este repositorio:
    ```bash
-   git clone https://github.com/tu_usuario/repo_herramientas_computacionales.git
+   git clone https://github.com/Diegosoltri/Herramientas_Computacionales_team10.git
    cd repo_herramientas_computacionales
    ```
 
@@ -98,11 +98,3 @@ def triangle(start, end):
         left(120)
     end_fill()
 ```
-
-## Contribuciones
-
-Este proyecto ha sido desarrollado con base en varios ejercicios y modificaciones sugeridas para mejorar la interacción y la funcionalidad visual de los juegos. Los commits documentan cada uno de estos cambios de manera incremental.
-
----
-
-Cualquier sugerencia o colaboración adicional es bienvenida para seguir mejorando este conjunto de herramientas computacionales.
