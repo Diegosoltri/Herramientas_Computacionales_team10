@@ -1,22 +1,27 @@
-"""Paint, for drawing shapes.
+"""Paint, para dibujar formas.
 
-Exercises
+Este programa utiliza el módulo turtle para crear una aplicación interactiva de dibujo.
 
-1. Add a color.
-2. Complete circle.
-3. Complete rectangle.
-4. Complete triangle.
-5. Add width parameter.
+Permite a los usuarios:
+1. Dibujar líneas, cuadrados, círculos, rectángulos, triángulos y pentágonos.
+2. Cambiar el color de las formas dibujadas.
+3. Deshacer la última acción.
+
+Las formas se dibujan haciendo clic en el lienzo para definir los puntos de inicio y fin.
+
+Ejercicios:
+1. Añadir más colores.
+2. Completar más formas.
+3. Añadir un parámetro de ancho para ajustar el grosor de las líneas.
 """
 
 from turtle import *
-
 from freegames import vector
+import math
 
-import math 
 
 def line(start, end):
-    """Draw line from start to end."""
+    """Dibuja una línea desde el punto de inicio hasta el de fin."""
     up()
     goto(start.x, start.y)
     down()
@@ -24,7 +29,8 @@ def line(start, end):
 
 
 def square(start, end):
-    """Draw square from start to end."""
+    """Dibuja un cuadrado con la esquina superior izquierda en el punto de inicio
+    y el tamaño determinado por el punto de fin."""
     up()
     goto(start.x, start.y)
     down()
@@ -38,64 +44,69 @@ def square(start, end):
 
 
 def circle_(start, end):
-    rad = math.sqrt((end.x - start.x)**2 + (end.y - start.y)**2)
+    """Dibuja un círculo con el centro en el punto de inicio y el radio determinado por el punto de fin."""
+    rad = math.sqrt((end.x - start.x) ** 2 + (end.y - start.y) ** 2)
     center = start.y - rad
-    
+
     up()
     goto(start.x, center)
     down()
-    begin_fill() 
+    begin_fill()
     circle(rad)
     end_fill()
 
+
 def rectangle(start, end):
-    """Draw rectangle from start to end."""
+    """Dibuja un rectángulo desde el punto de inicio hasta el de fin."""
     up()
     goto(start.x, start.y)
     down()
     begin_fill()
-    
+
     width = end.x - start.x
     height = end.y - start.y
-    
-    for i in range(2):
-        forward(width)  
+
+    for _ in range(2):
+        forward(width)
         left(90)
-        forward(height)  
+        forward(height)
         left(90)
+
+    end_fill()
 
 
 def triangle(start, end):
-    """Draw triangle from start to end."""
+    """Dibuja un triángulo equilátero con el lado determinado por la distancia entre el inicio y el fin."""
     up()
     goto(start.x, start.y)
     down()
     begin_fill()
-    
-    for count in range(3):
+
+    for _ in range(3):
         forward(end.x - start.x)
         left(120)
 
     end_fill()
-    
+
+
 def pentagon(start, end):
-    """Draw pentagon from start to end."""
+    """Dibuja un pentágono con el lado determinado por la distancia entre el inicio y el fin."""
     up()
     goto(start.x, start.y)
     down()
     begin_fill()
-    
+
     side_length = end.x - start.x
-    
-    for i in range(5):
+
+    for _ in range(5):
         forward(side_length)
         left(72)
-    
+
     end_fill()
 
 
 def tap(x, y):
-    """Store starting point or draw shape."""
+    """Almacena el punto de inicio o dibuja una forma dependiendo del estado actual."""
     start = state['start']
 
     if start is None:
@@ -108,25 +119,32 @@ def tap(x, y):
 
 
 def store(key, value):
-    """Store value in state at key."""
+    """Almacena un valor en el diccionario de estado."""
     state[key] = value
 
 
+# Inicialización del estado y configuración
 state = {'start': None, 'shape': line}
 setup(420, 420, 370, 0)
+
+# Manejadores de eventos
 onscreenclick(tap)
 listen()
-onkey(undo, 'u')
+onkey(undo, 'u')  # Deshacer última acción
 onkey(lambda: color('black'), 'K')
 onkey(lambda: color('white'), 'W')
 onkey(lambda: color('green'), 'G')
 onkey(lambda: color('blue'), 'B')
 onkey(lambda: color('red'), 'R')
 onkey(lambda: color('violet'), 'V')
+
+# Selección de formas
 onkey(lambda: store('shape', line), 'l')
 onkey(lambda: store('shape', square), 's')
 onkey(lambda: store('shape', circle_), 'c')
 onkey(lambda: store('shape', rectangle), 'r')
 onkey(lambda: store('shape', triangle), 't')
 onkey(lambda: store('shape', pentagon), 'p')
+
+# Finalización del programa
 done()
