@@ -3,98 +3,112 @@ from turtle import *
 
 from freegames import vector
 
-ball = vector(-200, -200)
-speed = vector(0, 0)
-targets = []
+ball = vector(-200, -200)  # Posición inicial de la bola
+speed = vector(0, 0)  # Velocidad inicial de la bola
+targets = []  # Lista que almacena los objetivos en movimiento
 
 
 def tap(x, y):
-    """Respond to screen tap."""
+    """Responde al toque en la pantalla (tap).
+
+    Si la bola no está en el área visible, se reposiciona en (-199, -199) y se ajusta la velocidad
+    basada en la posición del toque.
+    """
     if not inside(ball):
         ball.x = -199
         ball.y = -199
-        """Speed in x of red ball"""
+        # Ajusta la velocidad de la bola en el eje x
         speed.x = (x + 200) / 25 * 3
-        """Gravity force in red ball"""
+        # Ajusta la velocidad de la bola en el eje y con una gravedad simulada
         speed.y = (y + 200) / 25 * 1.5
 
 
 def inside(xy):
-    """Return True if xy within screen."""
+    """Devuelve True si el vector xy está dentro de la pantalla.
+
+    El área visible es de (-200, -200) a (200, 200).
+    """
     return -200 < xy.x < 200 and -200 < xy.y < 200
 
 
 def draw():
-    """Draw ball and targets."""
+    """Dibuja la bola y los objetivos en la pantalla."""
     clear()
 
+    # Dibuja cada objetivo en la pantalla
     for target in targets:
         goto(target.x, target.y)
         shape("triangle")
         stamp()
 
-    for target in targets:
-        goto(target.x, target.y)
-        color('purple')
-        shape("triangle")
-        stamp()
-
+    # Dibuja la bola si está dentro del área visible
     if inside(ball):
         goto(ball.x, ball.y)
         color('pink')
         shape("square")
         stamp()
 
-    update()
+    update()  # Actualiza la pantalla
 
 
 def move():
-    """Move ball and targets."""
+    """Mueve la bola y los objetivos.
+
+    Agrega nuevos objetivos en la pantalla y actualiza la posición de la bola y los objetivos,
+    aplicando gravedad a la bola.
+    """
+    # Agrega un nuevo objetivo al azar cada 40 ciclos
     if randrange(40) == 0:
         y = randrange(-150, 150)
-        target = vector(200, y)
+        target = vector(200, y)  # Objetivo en el borde derecho
         targets.append(target)
 
-    """Move targets"""
+    # Mueve los objetivos hacia la izquierda
     for target in targets:
-        """Speed of targets"""
         target.x -= 0.5
 
-    """Move the ball and apply gravity"""
+    # Mueve la bola si está dentro del área visible y aplica la gravedad
     if inside(ball):
-        speed.y -= 0.35
+        speed.y -= 0.35  # Gravedad aplicada a la velocidad en el eje y
         ball.move(speed)
 
-    """Reposition the ball if it leaves the screen"""
+    # Reposiciona la bola si sale de la pantalla
     if not inside(ball):
         ball.x = -200
         ball.y = -200
         speed.x = 0
         speed.y = 0
 
-    """Check collisions and keep targets on screen"""
-    dupe = targets.copy()
+    # Mantiene los objetivos en pantalla y verifica colisiones con la bola
+    dupe = targets.copy()  # Copia de la lista de objetivos
     targets.clear()
 
     for target in dupe:
+        # Verifica si la bola está lo suficientemente cerca del objetivo (colisión)
         if abs(target - ball) > 13:
-            """Reposition the target if it leaves the screen"""
+            # Reposiciona el objetivo si sale de la pantalla
             if target.x < -200:
                 target.x = 200
                 target.y = randrange(-150, 150)
-            targets.append(target)
+            targets.append(target)  # Añade el objetivo de vuelta a la lista
 
-    draw()
+    draw()  # Dibuja la escena actualizada
 
-    """Continue moving the goals"""
+    # Continúa moviendo los objetivos cada 50 milisegundos
     ontimer(move, 50)
 
 
+# Configuración inicial de la ventana Turtle
 setup(420, 420, 370, 0)
 hideturtle()
 up()
 tracer(False)
-onscreenclick(tap)
-move()
-done()
 
+# Asigna la función tap para que se active al hacer clic en la pantalla
+onscreenclick(tap)
+
+# Inicia el movimiento
+move()
+
+# Finaliza la ejecución de Turtle
+done()
